@@ -49,7 +49,7 @@ app.add_middleware(
 # ----------------------------------------------------------
 # MongoDB Connection
 # ----------------------------------------------------------
-MONGO_URI = "mongodb://localhost:27017"
+MONGO_URI = "mongodb+srv://fizzy:$Arjuncm0910@cluster1.p95xnmc.mongodb.net/"
 DATABASE_NAME = "kanban_notes"
 
 client = MongoClient(MONGO_URI)
@@ -99,13 +99,13 @@ class NoteMove(BaseModel):
 # Helper: Convert MongoDB document to JSON-friendly dict
 # ----------------------------------------------------------
 def doc_to_dict(doc):
-    """
-    Convert a MongoDB document to a regular dictionary.
-    Converts ObjectId to string so it can be sent as JSON.
-    """
     if doc is None:
         return None
-    doc["_id"] = str(doc["_id"])
+
+    for key, value in doc.items():
+        if isinstance(value, ObjectId):
+            doc[key] = str(value)
+
     return doc
 
 
